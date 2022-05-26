@@ -7,7 +7,6 @@ using UnityEngine;
 /// </summary>
 public class Player : MonoBehaviour
 {
-
     Rigidbody2D rgbd;
 
     // Start is called before the first frame update
