@@ -2,9 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// An interface for an inputController to control the player.
+/// </summary>
 public class PlayerControllable : MonoBehaviour, IControllable
 {
     public Player player;
+    public PlayerMovement playerMovement;
+
+    private Vector2 cursorPosition;
+
+    void Start()
+    {
+        cursorPosition = new Vector2();
+    }
+
+    public void UpdateMousePosition(float x, float y)
+    {
+        this.cursorPosition.x = x;
+        this.cursorPosition.y = y;
+    }
 
     public void OnMouseMoved()
     {
@@ -13,7 +30,7 @@ public class PlayerControllable : MonoBehaviour, IControllable
 
     public void OnHorizontalAxis(float value)
     {
-        player.Move(new Vector2(value, 0));
+        playerMovement.Move(new Vector2(value, 0));
     }
 
     public void OnVerticalAxis(float value)
@@ -51,19 +68,24 @@ public class PlayerControllable : MonoBehaviour, IControllable
         throw new System.NotImplementedException();
     }
 
-    public void OnFireDown()
+    public void OnFire1Down()
     {
-        // Nothing happens... yet
+        playerMovement.FireGrapplingHook(cursorPosition);
     }
 
-    public void OnFireUp()
+    public void OnFire2Down()
+    {
+        playerMovement.ReleaseGrapplingHook(cursorPosition);
+    }
+
+    public void OnFire1Up()
     {
         // Nothing happens.
     }
 
     public void OnJumpDown()
     {
-        player.Jump();
+        playerMovement.Jump();
     }
 
     public void OnJumpUp()

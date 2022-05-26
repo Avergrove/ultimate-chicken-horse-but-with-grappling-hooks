@@ -14,6 +14,7 @@ public class InputManager : MonoBehaviour
     private IControllable controllable;
     private InputMode inputMode;
 
+    private Vector2 cursorPosition;
 
     public enum InputMode
     {
@@ -23,6 +24,7 @@ public class InputManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        cursorPosition = Vector2.zero;
         inputMode = InputMode.Keyboard;
         controllable = controllingObject.GetComponent<IControllable>();
     }
@@ -45,6 +47,10 @@ public class InputManager : MonoBehaviour
 
     void CheckKeyboardButtons()
     {
+        cursorPosition.x = Input.mousePosition.x;
+        cursorPosition.y = Input.mousePosition.y;
+
+        controllable.UpdateMousePosition(cursorPosition.x, cursorPosition.y);
 
         float moveXTilt = Input.GetAxis("Horizontal");
         float moveYTilt = Input.GetAxis("Vertical");
@@ -60,7 +66,12 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            controllable.OnFireDown();
+            controllable.OnFire1Down();
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            controllable.OnFire2Down();
         }
     }
 
@@ -81,7 +92,7 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetButton("Fire"))
         {
-            controllable.OnFireDown();
+            controllable.OnFire1Down();
         }
     }
 

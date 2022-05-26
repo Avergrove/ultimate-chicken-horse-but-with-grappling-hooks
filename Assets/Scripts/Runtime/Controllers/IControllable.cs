@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IControllable
 {
+    void UpdateMousePosition(float x, float y);
     void OnMouseMoved();
     void OnHorizontalAxis(float value);
     void OnVerticalAxis(float value);
@@ -13,8 +14,9 @@ public interface IControllable
     void OnKeyboardFireUp();
     void OnJoystickFireDown();
     void OnJoystickFireUp();
-    void OnFireDown();
-    void OnFireUp();
+    void OnFire1Down();
+    void OnFire2Down();
+    void OnFire1Up();
     void OnJumpDown();
     void OnJumpUp();
 }
