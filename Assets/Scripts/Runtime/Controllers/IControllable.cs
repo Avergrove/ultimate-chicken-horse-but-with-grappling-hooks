@@ -6,8 +6,7 @@ public interface IControllable
 {
     void UpdateMousePosition(float x, float y);
     void OnMouseMoved();
-    void OnHorizontalAxis(float value);
-    void OnVerticalAxis(float value);
+    void OnDirectional(float x, float y);
     void OnLeftAnalogStick(Vector2 tilt);
     void OnRightAnalogStick(Vector2 tilt);
     void OnKeyboardFireDown();

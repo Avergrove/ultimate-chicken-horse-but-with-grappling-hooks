@@ -28,14 +28,9 @@ public class PlayerControllable : MonoBehaviour, IControllable
         // Nothing happens
     }
 
-    public void OnHorizontalAxis(float value)
+    public void OnDirectional(float x, float y)
     {
-        playerMovement.Move(new Vector2(value, 0));
-    }
-
-    public void OnVerticalAxis(float value)
-    {
-        // Nothing happens... yet
+        playerMovement.Move(x, y);
     }
 
     public void OnLeftAnalogStick(Vector2 tilt)

@@ -7344,10 +7344,14 @@ MonoBehaviour:
   ropeJoint: {fileID: 570918400}
   crosshair: {fileID: 457480754}
   crosshairSprite: {fileID: 457480755}
+  ropeHookPosition: {x: 0, y: 0}
   ropeRenderer: {fileID: 570918401}
   ropeLayerMask:
     serializedVersion: 2
     m_Bits: 65
+  swingForce: 2.5
+  rappelSpeed: 10
+  debugY: 0
 --- !u!232 &570918400
 DistanceJoint2D:
   m_ObjectHideFlags: 0

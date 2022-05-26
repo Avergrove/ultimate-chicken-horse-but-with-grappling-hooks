@@ -9,7 +9,6 @@ public class RopeSystem : MonoBehaviour
     // Cache
     public Rigidbody2D rgbd;
 
-    // 1
     public GameObject ropeHingeAnchor;
     public DistanceJoint2D ropeJoint;
     public Transform crosshair;
@@ -17,6 +16,8 @@ public class RopeSystem : MonoBehaviour
     // public PlayerMovement playerMovement;
     private bool ropeAttached;
     private Vector2 playerPosition;
+
+    public Vector2 ropeHookPosition;
     private Rigidbody2D ropeHingeAnchorRb;
     private SpriteRenderer ropeHingeAnchorSprite;
 
@@ -29,6 +30,13 @@ public class RopeSystem : MonoBehaviour
     private bool distanceSet;
     private Dictionary<Vector2, int> wrapPointsLookup = new Dictionary<Vector2, int>();
 
+    private bool isColliding;
+
+    // Movement Stats
+    public float swingForce;
+    public float rappelSpeed;
+
+    public float debugY;
 
     void Awake()
     {
@@ -51,9 +59,6 @@ public class RopeSystem : MonoBehaviour
             aimAngle = Mathf.PI * 2 + aimAngle;
         }
 
-        // 4
-        var aimDirection = Quaternion.Euler(0, 0, aimAngle * Mathf.Rad2Deg) * Vector2.right;
-
         // 5
         playerPosition = transform.position;
 
@@ -65,6 +70,7 @@ public class RopeSystem : MonoBehaviour
     
         else
         {
+            ropeHookPosition = ropePositions.Last();
             crosshairSprite.enabled = false;
 
             // 1
@@ -259,6 +265,73 @@ public class RopeSystem : MonoBehaviour
         // 3
         var orderedDictionary = distanceDictionary.OrderBy(e => e.Key);
         return orderedDictionary.Any() ? orderedDictionary.First().Value : Vector2.zero;
+    }
+
+    /// <summary>
+    /// Causes the attached object to swing along the rope
+    /// </summary>
+    /// <param name="x">The directional x axis input</param>
+    /// <param name="y">The directional y axis input</param>
+    /// TODO: Direction should factor in position of the player
+    public void Swing(float x)
+    {
+        if(x < 0 || x > 0)
+        {
+            var playerToHookDirection = (ropeHookPosition - (Vector2) transform.position).normalized;
+            Vector2 swingDirection;
+            if(x < 0)
+            {
+                if (transform.position.y <= ropeHookPosition.y)
+                {
+                    swingDirection = new Vector2(-playerToHookDirection.y, playerToHookDirection.x);
+                }
+
+                else
+                {
+                    swingDirection = new Vector2(playerToHookDirection.y, -playerToHookDirection.x);
+                }
+            }
+            else
+            {
+                if (transform.position.y <= ropeHookPosition.y)
+                {
+                    swingDirection = new Vector2(playerToHookDirection.y, -playerToHookDirection.x);
+                }
+                else
+                {
+                    swingDirection = new Vector2(-playerToHookDirection.y, playerToHookDirection.x);
+                }
+            }
+
+            var force = swingDirection * swingForce;
+            rgbd.AddForce(force);
+        }
+    }
+
+    /// <summary>
+    /// Allows the owner to lengthen or shorten the rope
+    /// </summary>
+    /// <param name="y"></param>
+    public void Rappel(float y)
+    {
+        if (!isColliding && Mathf.Abs(y) > 0)
+        {
+            ropeJoint.distance -= Time.deltaTime * rappelSpeed * y;
+        }
+    }
+
+    /// <summary>
+    /// Collission detection to check whether rope should continue to be allowed to rappel
+    /// </summary>
+    /// <param name="colliderStay"></param>
+    void OnTriggerStay2D(Collider2D colliderStay)
+    {
+        isColliding = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D colliderOnExit)
+    {
+        isColliding = false;
     }
 
 }

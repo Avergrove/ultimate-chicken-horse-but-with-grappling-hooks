@@ -51,28 +51,40 @@ public class PlayerMovement : MonoBehaviour
         groundCheck();
     }
 
-    public void Move(Vector2 input)
+    public void Move(float x, float y)
     {
+
+        // Handle sprite parameters
+        if(x > 0)
+        {
+            sr.flipX = false;
+        }
+
+        else if(x < 0)
+        {
+            sr.flipX = true;
+        }
+
+        // Actually handle movement
         if (isGrappled)
         {
-            
+            ropeSystem.Swing(x);
+            ropeSystem.Rappel(y);
         }
 
         else
         {
             if (isGrounded)
             {
-                if (input.x > 0)
+                if (x > 0)
                 {
-                    sr.flipX = false;
-                    rgbd.velocity = new Vector2(maxGroundSpeed * input.x, rgbd.velocity.y);
+                    rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
                     anim.SetBool("isMoving", true);
                 }
 
-                else if (input.x < 0)
+                else if (x < 0)
                 {
-                    sr.flipX = true;
-                    rgbd.velocity = new Vector2(maxGroundSpeed * input.x, rgbd.velocity.y);
+                    rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
                     anim.SetBool("isMoving", true);
                 }
 
@@ -85,19 +97,17 @@ public class PlayerMovement : MonoBehaviour
 
             else
             {
-                if (input.x > 0)
+                if (x > 0)
                 {
-                    sr.flipX = false;
                     if (rgbd.velocity.x < maxGroundSpeed)
                     {
-                        rgbd.velocity = new Vector2(maxGroundSpeed * input.x, rgbd.velocity.y);
+                        rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
                     }
                 }
 
-                else if (input.x < 0)
+                else if (x < 0)
                 {
-                    sr.flipX = true;
-                    rgbd.velocity = new Vector2(maxGroundSpeed * input.x, rgbd.velocity.y);
+                    rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
                 }
 
                 else

@@ -55,8 +55,7 @@ public class InputManager : MonoBehaviour
         float moveXTilt = Input.GetAxis("Horizontal");
         float moveYTilt = Input.GetAxis("Vertical");
 
-        controllable.OnHorizontalAxis(moveXTilt);
-        controllable.OnVerticalAxis(moveYTilt);
+        controllable.OnDirectional(moveXTilt, moveYTilt);
         controllable.OnMouseMoved();
 
         if (Input.GetButtonDown("Jump"))
@@ -79,7 +78,7 @@ public class InputManager : MonoBehaviour
     {
         float leftXTilt = Input.GetAxis("LeftJoyHorizontal");
         float leftYTilt = Input.GetAxis("LeftJoyVertical");
-        controllable.OnLeftAnalogStick(new Vector2(leftXTilt, leftYTilt));
+        controllable.OnDirectional(leftXTilt, leftYTilt);
 
         float rightXTilt = Input.GetAxis("RightJoyHorizontal");
         float rightYTilt = Input.GetAxis("RightJoyVertical");
@@ -90,9 +89,14 @@ public class InputManager : MonoBehaviour
             controllable.OnJumpDown();
         }
 
-        if (Input.GetButton("Fire"))
+        if (Input.GetButton("Fire1"))
         {
             controllable.OnFire1Down();
+        }
+
+        if (Input.GetButton("Fir21"))
+        {
+            controllable.OnFire2Down();
         }
     }
 
