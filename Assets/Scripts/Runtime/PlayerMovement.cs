@@ -155,10 +155,14 @@ public class PlayerMovement : MonoBehaviour
         isGrappled = false;
     }
 
+    /// <summary>
+    /// Checks whether the player is on the ground
+    /// TODO: Swap raycast check with collider check
+    /// </summary>
     private void groundCheck()
     {
 
-        int hits = Physics2D.Raycast(transform.position, Vector2.down, groundedRaycastFilter, hitResults, 2);
+        int hits = Physics2D.Raycast(transform.position, Vector2.down, groundedRaycastFilter, hitResults, 1.1f);
         if (hits > 0)
         {
             if (!isGrounded)

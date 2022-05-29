@@ -5,7 +5,7 @@ using UnityEngine;
 public interface IControllable
 {
     void UpdateMousePosition(float x, float y);
-    void OnMouseMoved();
+    void OnMouseMoved(float mouseXMove, float mouseYMove);
     void OnDirectional(float x, float y);
     void OnLeftAnalogStick(Vector2 tilt);
     void OnRightAnalogStick(Vector2 tilt);
@@ -18,4 +18,5 @@ public interface IControllable
     void OnFire1Up();
     void OnJumpDown();
     void OnJumpUp();
+    void OnEscDown();
 }

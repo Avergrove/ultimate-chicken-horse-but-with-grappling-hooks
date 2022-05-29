@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// An interface for an inputController to control the player.
 /// </summary>
-public class PlayerControllable : MonoBehaviour, IControllable
+public class PlayerControllable : BaseControllable
 {
     public Player player;
     public PlayerMovement playerMovement;
@@ -17,7 +17,7 @@ public class PlayerControllable : MonoBehaviour, IControllable
         cursorPosition = new Vector2();
     }
 
-    public void UpdateMousePosition(float x, float y)
+    public override void UpdateMousePosition(float x, float y)
     {
         this.cursorPosition.x = x;
         this.cursorPosition.y = y;
@@ -28,63 +28,68 @@ public class PlayerControllable : MonoBehaviour, IControllable
         // Nothing happens
     }
 
-    public void OnDirectional(float x, float y)
+    public override void OnDirectional(float x, float y)
     {
         playerMovement.Move(x, y);
     }
 
-    public void OnLeftAnalogStick(Vector2 tilt)
+    public override void OnLeftAnalogStick(Vector2 tilt)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnRightAnalogStick(Vector2 tilt)
+    public override void OnRightAnalogStick(Vector2 tilt)
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnKeyboardFireDown()
+    public override void OnKeyboardFireDown()
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnKeyboardFireUp()
+    public override void OnKeyboardFireUp()
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnJoystickFireDown()
+    public override void OnJoystickFireDown()
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnJoystickFireUp()
+    public override void OnJoystickFireUp()
     {
         throw new System.NotImplementedException();
     }
 
-    public void OnFire1Down()
+    public override void OnFire1Down()
     {
         playerMovement.FireGrapplingHook(cursorPosition);
     }
 
-    public void OnFire2Down()
+    public override void OnFire2Down()
     {
         playerMovement.ReleaseGrapplingHook(cursorPosition);
     }
 
-    public void OnFire1Up()
+    public override void OnFire1Up()
     {
         // Nothing happens.
     }
 
-    public void OnJumpDown()
+    public override void OnJumpDown()
     {
         playerMovement.Jump();
     }
 
-    public void OnJumpUp()
+    public override void OnJumpUp()
     {
         // Nothing happens
+    }
+
+    public override void OnMouseMoved(float mouseXMove, float mouseYMove)
+    {
+        
     }
 }
