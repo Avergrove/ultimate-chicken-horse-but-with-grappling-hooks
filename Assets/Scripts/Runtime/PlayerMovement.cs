@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     SpriteRenderer sr;
     Rigidbody2D rgbd;
     RopeSystem ropeSystem;
+    public SmoothCamera mainCamera;
 
     // Grounded raycasts
     public ContactFilter2D groundedRaycastFilter;
@@ -16,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     // Entity states
     public bool isGrounded;
     public bool isGrappled;
+    private Direction direction;
 
     // Movement stats
     public float maxGroundSpeed;
@@ -35,6 +37,8 @@ public class PlayerMovement : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         rgbd = GetComponent<Rigidbody2D>();
         ropeSystem = GetComponent<RopeSystem>();
+
+        direction = Direction.Right;
     }
 
     // Start is called before the first frame update
@@ -54,16 +58,28 @@ public class PlayerMovement : MonoBehaviour
     public void Move(float x, float y)
     {
 
-        // Handle sprite parameters
+        // Handle miscellaneous stuff not related directly to movement.
+        // TODO: Avoid repeated calls by using event based calls.
         if(x > 0)
         {
-            sr.flipX = false;
+            if(direction == Direction.Left)
+            {
+                direction = Direction.Right;
+                this.OnDirectionChange(direction);
+            }
         }
 
         else if(x < 0)
         {
-            sr.flipX = true;
+            if(direction == Direction.Right)
+            {
+                direction = Direction.Left;
+                this.OnDirectionChange(direction);
+            }
         }
+
+        
+
 
         // Actually handle movement
         if (isGrappled)
@@ -180,6 +196,22 @@ public class PlayerMovement : MonoBehaviour
                 isGrounded = false;
                 anim.SetBool("isGrounded", isGrounded);
             }
+        }
+    }
+
+
+    private void OnDirectionChange(Direction newDir)
+    {
+        if(newDir == Direction.Left)
+        {
+            sr.flipX = true;
+            mainCamera.SetOffset(new Vector2(-5, mainCamera.GetOffset().y));
+        }
+
+        else if(newDir == Direction.Right)
+        {
+            sr.flipX = false;
+            mainCamera.SetOffset(new Vector2(5, mainCamera.GetOffset().y));
         }
     }
 

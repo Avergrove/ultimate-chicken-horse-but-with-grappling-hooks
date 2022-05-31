@@ -1,0 +1,18 @@
+Design Notes:
+	Stage:
+		- Background
+			- Should  be relatively plain and have low saturation colors to ensure it doesn't distract the player from the platform and traps.
+		- Stage itself:
+			- Platforms should have a clear silhouette, try and reduce foreground objects.
+	
+	Characters:
+		- Base: Refer to Junkrat from Overwatch and start from there!
+			- Somewhat batshit insane, but not insane to the point of not knowing how to swing that hook!
+		- Variation: Cold and calculating guy
+		- Variation: Someone swinging for the heck of it.
+		
+		- All characters should have the same abilities.
+		
+	- Modes:
+		- The basic mode will based around Ultimate Chicken Horse's (UCH) Party mode, players take turns deploying traps and attempting to reach a goal through them!
+		
