@@ -17,7 +17,7 @@ TagManager:
   - Platforms
   - Background
   - DeployedPlatforms
-  - 
+  - EventBoxes
   - 
   - 
   - 
@@ -44,9 +44,18 @@ TagManager:
   - name: Background
     uniqueID: 2612120155
     locked: 0
+  - name: Platform
+    uniqueID: 2663128029
+    locked: 0
+  - name: Player
+    uniqueID: 1410491923
+    locked: 0
   - name: Midground
     uniqueID: 3544804251
     locked: 0
   - name: Foreground
     uniqueID: 523880863
+    locked: 0
+  - name: Cursor
+    uniqueID: 534822019
     locked: 0

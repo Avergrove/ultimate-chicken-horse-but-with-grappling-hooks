@@ -205,13 +205,11 @@ public class PlayerMovement : MonoBehaviour
         if(newDir == Direction.Left)
         {
             sr.flipX = true;
-            mainCamera.SetOffset(new Vector2(-5, mainCamera.GetOffset().y));
         }
 
         else if(newDir == Direction.Right)
         {
             sr.flipX = false;
-            mainCamera.SetOffset(new Vector2(5, mainCamera.GetOffset().y));
         }
     }
 

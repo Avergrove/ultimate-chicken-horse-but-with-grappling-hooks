@@ -23,7 +23,7 @@ public class PlatformEditorController : MonoBehaviour, IControllable
     /// </summary>
     public void OnFire1Down()
     {
-        platformEditor.DeployPlatform(mousePosition);
+        platformEditor.DeployPlatform();
     }
 
     public void OnFire1Up()
@@ -36,7 +36,7 @@ public class PlatformEditorController : MonoBehaviour, IControllable
     /// </summary>
     public void OnFire2Down()
     {
-        throw new System.NotImplementedException();
+        platformEditor.DeletePlatform();
     }
 
     public void OnJoystickFireDown()

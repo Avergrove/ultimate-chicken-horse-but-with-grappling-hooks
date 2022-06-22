@@ -18,13 +18,13 @@ public class SmoothCamera : MonoBehaviour
     private Vector2 velocity = Vector2.zero;
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         this.offset = new Vector2(0, 0);
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
         if (transform)
         {

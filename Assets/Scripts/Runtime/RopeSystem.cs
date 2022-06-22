@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/// <summary>
+/// Grants the user the ability to fire grappling hook ropes
+/// TODO: Add Elasticity
+/// </summary>
 public class RopeSystem : MonoBehaviour
 {
 

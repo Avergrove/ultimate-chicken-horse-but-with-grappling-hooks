@@ -1,0 +1,48 @@
+Design Notes:
+	Stage:
+		- Background
+			- Should  be relatively plain and have low saturation colors to ensure it doesn't distract the player from the platform and traps.
+		- Stage itself:
+			- Platforms should have a clear silhouette, try and reduce foreground objects.
+	
+	Characters:
+		- Base: Refer to Junkrat from Overwatch and start from there!
+			- Somewhat batshit insane, but not insane to the point of not knowing how to swing that hook!
+		- Variation: Cold and calculating guy
+		- Variation: Someone swinging for the heck of it.
+		
+		- All characters should have the same abilities.
+		
+	- Modes:
+		- The basic mode will based around Ultimate Chicken Horse's (UCH) Party mode, players take turns deploying traps and attempting to reach a goal through them!
+
+UI:
+	- Selection Auras
+	- 
+	
+UX: 
+	- Background response to keep the user interested even if they aren't directly interacting with the game.
+		- For example, clouds moving in the background keeps the world alive.
+
+	- General checklist:
+		- Squash and stretch
+		- Particle effects (Your gun needs explosions!)
+		- Still frames (When you hit something, should the game stop to let you evaluate what just happened?)
+		- Animations (Should your character do a sick spin while doing a perfect grapple jump?)
+	
+	Events: 
+		- Responses (When you hit something, another thing should happen!)
+			- Still Frames
+			- Particle Effects
+			- What if it's a "failed" response, such as grapple failure?
+
+	- Player Movement:
+		- Grappling hook shouldn't be rigid.
+		- Grappling hook should be a fired projectile
+	
+	- Landing on grass should release leaves, for example.
+		- No, not just leaves, leaves the move in your direction, oh yes, wait, how do people implement that?
+
+Please reference other platformers for feedback effects:
+	- Dustforce
+	- Celeste

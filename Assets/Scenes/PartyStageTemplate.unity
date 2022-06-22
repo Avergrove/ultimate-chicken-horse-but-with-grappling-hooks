@@ -29894,8 +29894,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 534822019
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -58530,6 +58530,18 @@ PrefabInstance:
       propertyPath: groundedRaycastFilter.layerMask.m_Bits
       value: 2560
       objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038143, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: m_ConnectedAnchor.x
+      value: -0.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038143, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: m_ConnectedAnchor.y
+      value: -0.7950001
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038143, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: m_AutoConfigureConnectedAnchor
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038144, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: swingForce
       value: 0.5
@@ -58548,7 +58560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038147, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.55
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038147, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: m_LocalPosition.z
@@ -58588,6 +58600,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038148, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038150, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038150, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: m_Size.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038150, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: m_Offset.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038151, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
