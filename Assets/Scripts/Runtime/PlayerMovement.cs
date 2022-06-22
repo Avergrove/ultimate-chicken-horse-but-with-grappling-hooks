@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -17,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     // Entity states
     public bool isGrounded;
     public bool isGrappled;
+    public bool isDying;
     private Direction direction;
 
     // Movement stats
@@ -30,6 +32,10 @@ public class PlayerMovement : MonoBehaviour
     private int jumpCount;
 
     public float grappleJumpBoost;
+
+    public float deathImpactMinSpeed;
+    public float deathBaseSpeed;
+    public float deathImpactMaxSpeed;
 
     void Awake()
     {
@@ -47,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
         jumpCount = maxJumpCount;
         isGrappled = false;
         isGrounded = false;
+        isDying = false;
     }
 
     // Update is called once per frame
@@ -57,79 +64,81 @@ public class PlayerMovement : MonoBehaviour
 
     public void Move(float x, float y)
     {
-
-        // Handle miscellaneous stuff not related directly to movement.
-        // TODO: Avoid repeated calls by using event based calls.
-        if(x > 0)
+        if (!isDying)
         {
-            if(direction == Direction.Left)
+            // Handle miscellaneous stuff not related directly to movement.
+            // TODO: Avoid repeated calls by using event based calls.
+            if (x > 0)
             {
-                direction = Direction.Right;
-                this.OnDirectionChange(direction);
+                if (direction == Direction.Left)
+                {
+                    direction = Direction.Right;
+                    this.OnDirectionChange(direction);
+                }
             }
-        }
 
-        else if(x < 0)
-        {
-            if(direction == Direction.Right)
+            else if (x < 0)
             {
-                direction = Direction.Left;
-                this.OnDirectionChange(direction);
+                if (direction == Direction.Right)
+                {
+                    direction = Direction.Left;
+                    this.OnDirectionChange(direction);
+                }
             }
-        }
-
-        
 
 
-        // Actually handle movement
-        if (isGrappled)
-        {
-            ropeSystem.Swing(x);
-            ropeSystem.Rappel(y);
-        }
 
-        else
-        {
-            if (isGrounded)
+
+            // Actually handle movement
+            if (isGrappled)
             {
-                if (x > 0)
-                {
-                    rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
-                    anim.SetBool("isMoving", true);
-                }
-
-                else if (x < 0)
-                {
-                    rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
-                    anim.SetBool("isMoving", true);
-                }
-
-                else
-                {
-                    rgbd.velocity = new Vector2(rgbd.velocity.x * (100 -  xPercentSpeedDecay) / 100, rgbd.velocity.y);
-                    anim.SetBool("isMoving", false);
-                }
+                ropeSystem.Swing(x);
+                ropeSystem.Rappel(y);
             }
 
             else
             {
-                if (x > 0)
+                if (isGrounded)
                 {
-                    if (rgbd.velocity.x < maxGroundSpeed)
+                    if (x > 0)
                     {
                         rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
+                        anim.SetBool("isMoving", true);
                     }
-                }
 
-                else if (x < 0)
-                {
-                    rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
+                    else if (x < 0)
+                    {
+                        rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
+                        anim.SetBool("isMoving", true);
+                    }
+
+                    else
+                    {
+                        rgbd.velocity = new Vector2(rgbd.velocity.x * (100 - xPercentSpeedDecay) / 100, rgbd.velocity.y);
+                        anim.SetBool("isMoving", false);
+                    }
                 }
 
                 else
                 {
-                    // Speed decays slower in the air
-                    rgbd.velocity = new Vector2(rgbd.velocity.x * (100 - xPercentAirSpeedDecay) / 100, rgbd.velocity.y);
+                    if (x > 0)
+                    {
+                        if (rgbd.velocity.x < maxGroundSpeed)
+                        {
+                            rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
+                        }
+                    }
+
+                    else if (x < 0)
+                    {
+                        rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
+                    }
+
+                    else
+                    {
+                        // Speed decays slower in the air
+                        rgbd.velocity = new Vector2(rgbd.velocity.x * (100 - xPercentAirSpeedDecay) / 100, rgbd.velocity.y);
+                    }
                 }
             }
         }
@@ -211,6 +220,37 @@ public class PlayerMovement : MonoBehaviour
         {
             sr.flipX = false;
         }
+    }
+
+    /// <summary>
+    /// Dying is technically a type of movement. For about 500 ms before you explode into confetti anyway.
+    /// TODO: Implement a more satisfying "death".
+    /// </summary>
+    public void Die(Vector2 deathOrigin)
+    {
+        // 1) Be knocked back, this should scale and be clamped somewhat based on velocity on contact
+        isDying = true;
+        Vector2 dir = -(deathOrigin - (Vector2) this.transform.position).normalized;
+        float deathSpeedParam = Mathf.InverseLerp(deathImpactMinSpeed, deathImpactMaxSpeed, rgbd.velocity.magnitude);
+        
+        this.rgbd.velocity = dir * Mathf.Lerp(deathBaseSpeed * 0.8f, deathBaseSpeed * 1.2f, deathSpeedParam);
+        this.sr.color = Color.red;
+
+
+        // 2) Be erased from existence, let's implement this later
+        //  - Black out the screen by wiping according to death direction
+        //  - After wipe, respawn.
+
+
+        // 3) Respawn from checkpoint, stop dying. Perchance.
+        StartCoroutine(Undie(0.5f));
+    }
+
+    private IEnumerator Undie(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        this.sr.color = Color.white;
+        isDying = false;
     }
 
 }

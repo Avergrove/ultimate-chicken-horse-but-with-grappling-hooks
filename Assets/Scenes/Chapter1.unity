@@ -28568,6 +28568,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1808493655, guid: 93477ba29fa3587458e754017204bcb3, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4282208416752456205, guid: 93477ba29fa3587458e754017204bcb3, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -28615,6 +28619,18 @@ PrefabInstance:
     - target: {fileID: 5038037671516998059, guid: 93477ba29fa3587458e754017204bcb3, type: 3}
       propertyPath: m_Name
       value: Spike
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190217297618746113, guid: 93477ba29fa3587458e754017204bcb3, type: 3}
+      propertyPath: m_Color.b
+      value: 0.052064814
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190217297618746113, guid: 93477ba29fa3587458e754017204bcb3, type: 3}
+      propertyPath: m_Color.g
+      value: 0.052064814
+      objectReference: {fileID: 0}
+    - target: {fileID: 6190217297618746113, guid: 93477ba29fa3587458e754017204bcb3, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8490566
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93477ba29fa3587458e754017204bcb3, type: 3}
@@ -45096,8 +45112,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1490109022}
     - target: {fileID: 2536954218580038141, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: deathBaseSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038141, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: jumpInitialSpeed
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038141, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: deathImpactMaxSpeed
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038141, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: deathImpactMinSpeed
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038141, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: groundedRaycastFilter.layerMask.m_Bits
@@ -45213,6 +45241,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038151, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038151, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -45611,6 +45643,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1803729122}
   m_CullTransparentMesh: 1
+--- !u!1 &1915419279 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5038037671516998059, guid: 93477ba29fa3587458e754017204bcb3, type: 3}
+  m_PrefabInstance: {fileID: 814404942}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1915419280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1915419279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f86b1c35070b6ff40a7340336fadd961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1924832979
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45698,12 +45747,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02c75532fe97dac4a9847541ba17a6f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xMaxDeform: 0.8
+  xMaxDeform: 0.85
   xDeformMinSpeed: 50
   xDeformMaxSpeed: 100
-  yMaxDeform: 0.8
+  yMaxDeform: 0.85
   yDeformMinSpeed: 21
-  yDeformMaxSpeed: 50
+  yDeformMaxSpeed: 40
 --- !u!1 &1941772667
 GameObject:
   m_ObjectHideFlags: 0
