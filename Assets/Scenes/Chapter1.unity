@@ -517,8 +517,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e338441bdafceb04a9cee6b8124ea62f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseUnitsMovedPerOffset: 0
-  parallaxStrength: 0
+  baseUnitsMovedPerOffset: 50
+  parallaxStrength: 0.75
   followingCamera: {fileID: 1490109024}
 --- !u!4 &595320738
 Transform:
@@ -528,8 +528,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 595320736}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.0772614, y: 2.8891847, z: 10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.48, z: 10}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children:
   - {fileID: 1269652586}
   - {fileID: 19355920}
@@ -44462,7 +44462,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 7.023595
+  orthographic size: 9.704311
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -45096,6 +45096,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1490109022}
     - target: {fileID: 2536954218580038141, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: jumpInitialSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038141, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: groundedRaycastFilter.layerMask.m_Bits
       value: 2560
       objectReference: {fileID: 0}
@@ -45164,8 +45168,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038148, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038148, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038148, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: m_Sprite
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038148, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: m_DrawMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038148, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: m_SortingLayer
@@ -45183,9 +45199,13 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038149, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: m_GravityScale
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038150, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: m_Size.y
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038150, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: m_Offset.y
@@ -45666,6 +45686,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2536954218580038147, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
   m_PrefabInstance: {fileID: 1568403175}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1931439535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931439523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02c75532fe97dac4a9847541ba17a6f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xMaxDeform: 0.8
+  xDeformMinSpeed: 50
+  xDeformMaxSpeed: 100
+  yMaxDeform: 0.8
+  yDeformMinSpeed: 21
+  yDeformMaxSpeed: 50
 --- !u!1 &1941772667
 GameObject:
   m_ObjectHideFlags: 0
