@@ -7,10 +7,13 @@ using UnityEngine;
 /// </summary>
 public class SpikeTrap : MonoBehaviour
 {
+
+    private AudioSource aSource;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        aSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -41,24 +44,30 @@ public class SpikeTrap : MonoBehaviour
 
                 if(top && rgbd.velocity.y < 0)
                 {
-                    playerMovement.Die(center);
+                    this.Kill(playerMovement);
                 }
 
                 else if(!top && rgbd.velocity.y > 0)
                 {
-                    playerMovement.Die(center);
+                    this.Kill(playerMovement);
                 }
 
                 if (right && rgbd.velocity.x < 0)
                 {
-                    playerMovement.Die(center);
+                    this.Kill(playerMovement);
                 }
 
                 else if(!right && rgbd.velocity.y > 0)
                 {
-                    playerMovement.Die(center);
+                    this.Kill(playerMovement);
                 }
             }
         }
+    }
+
+    private void Kill(PlayerMovement target)
+    {
+        target.Die(this.transform.position);
+        aSource.Play();
     }
 }

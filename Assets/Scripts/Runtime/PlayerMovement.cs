@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     Animator anim;
+    AudioSource aSource;
     SpriteRenderer sr;
     Rigidbody2D rgbd;
     RopeSystem ropeSystem;
@@ -37,9 +38,14 @@ public class PlayerMovement : MonoBehaviour
     public float deathBaseSpeed;
     public float deathImpactMaxSpeed;
 
+    // Look and feel
+    public AudioClip jumpClip;
+    public AudioClip fireClip;
+
     void Awake()
     {
         anim = GetComponent<Animator>();
+        aSource = GetComponent<AudioSource>();
         sr = GetComponent<SpriteRenderer>();
         rgbd = GetComponent<Rigidbody2D>();
         ropeSystem = GetComponent<RopeSystem>();
@@ -151,6 +157,7 @@ public class PlayerMovement : MonoBehaviour
             if (jumpCount > 0)
             {
                 rgbd.velocity = new Vector2(rgbd.velocity.x, jumpInitialSpeed);
+                aSource.PlayOneShot(jumpClip, 0.25f);
                 jumpCount--;
             }
         }
@@ -169,6 +176,7 @@ public class PlayerMovement : MonoBehaviour
         isGrappled = ropeSystem.Fire(cursorPosition);
         if (isGrappled)
         {
+            aSource.PlayOneShot(fireClip, 0.25f);
             jumpCount = maxJumpCount;
         }
     }

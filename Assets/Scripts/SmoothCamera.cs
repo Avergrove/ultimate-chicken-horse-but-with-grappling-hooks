@@ -17,6 +17,7 @@ public class SmoothCamera : MonoBehaviour
     private Vector2 offset;
     private Vector2 velocity = Vector2.zero;
 
+
     // Start is called before the first frame update
     protected void Start()
     {
@@ -47,5 +48,13 @@ public class SmoothCamera : MonoBehaviour
     public Vector2 GetOffset()
     {
         return this.offset;
+    }
+
+    /// <summary>
+    /// Requests the camera to perform a screen shake
+    /// </summary>
+    public void ScreenShake()
+    {
+
     }
 }

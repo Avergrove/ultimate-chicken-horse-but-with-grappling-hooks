@@ -1,0 +1,27 @@
+STUFF:
+	1) Convert your hook into a projectile
+	2) Implement a reload and fire system, which should help mitigate the problem of the player having too much control of the environment.
+	3) Implement tiles that CANT be hooked on, or tiles in its path that destroys the hook projectile
+
+Fun factor:
+	1) The game is not very exciting when there's nothing to latch on on a long path, there are two options:
+		- Don't have long paths
+		- Let players grapple onto the floor to speed boost somehow
+			- Which involves creating an elastic grappling hook
+			- What if there's a secondary fire meant for ground based movement? This summons a nail so that the player moves forward instead of being pulled across the floor
+				- Check Knuckles' Chaotix tethers, instead of having a second player, you can get the player to fire a heavy tether which hurls them forwards, usable anywhere!
+	
+UX:
+	1) Implement a more satisfying death
+	2) Implement camera shake
+	3) Add sound effects
+	4) Add placeholder music
+	
+Bugs:
+	1) Player character stutters at max speed 
+		- Check whether it's a render stutter or a velocity stutter!
+	
+Refactoring:
+	1) Is there a way to use the tile palette to deploy prefabs?
+	2) Move the kill code somewhere else. Maybe even have an IKillable interface.
+	3) PlayerMovement has too much responsibility, it handles physics, logics, and UX.
