@@ -16,7 +16,6 @@ Fun factor:
 UX:
 	1) Implement a more satisfying death
 	2) Implement camera shake
-	x) Add sound effects
 	4) Add placeholder music
 	
 Bugs:
@@ -26,5 +25,3 @@ Bugs:
 Refactoring:
 	1) Is there a way to use the tile palette to deploy prefabs?
 	2) Move the kill code somewhere else. Maybe even have an IKillable interface.
-	3) PlayerMovement has too much responsibility, it handles physics, logics, and UX.
-		- Solution: Messaging system, and move state of the entity to a simple class to hold state (in this case, Player)
