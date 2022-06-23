@@ -17,14 +17,14 @@ public class VelocitySpriteDeformer : MonoBehaviour
     public float yDeformMinSpeed;
     public float yDeformMaxSpeed;
 
-    private PlayerMovement playerMovement;
+    private Player player;
     private Rigidbody2D rgbd;
     private SpriteRenderer sr;
 
     // Start is called before the first frame update
     void Start()
     {
-        this.playerMovement = GetComponent<PlayerMovement>();
+        this.player = GetComponent<Player>();
         this.rgbd = GetComponent<Rigidbody2D>();
         this.sr = GetComponent<SpriteRenderer>();
     }
@@ -35,7 +35,7 @@ public class VelocitySpriteDeformer : MonoBehaviour
         float speedX = Mathf.Abs(rgbd.velocity.x);
         float speedY = Mathf.Abs(rgbd.velocity.y);
 
-        if (speedX > xDeformMinSpeed && !playerMovement.isGrounded)
+        if (speedX > xDeformMinSpeed && !player.IsGrounded)
         {
             float clampedXSpeed = Mathf.Clamp(speedX, xDeformMinSpeed, xDeformMaxSpeed);
             float xSpeedInvLerp = Mathf.InverseLerp(xDeformMinSpeed, xDeformMaxSpeed, clampedXSpeed);

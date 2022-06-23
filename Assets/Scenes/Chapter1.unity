@@ -45108,6 +45108,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038141, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: fireClip
+      value: 
+      objectReference: {fileID: 8300000, guid: a691845e6314a8e4d8f84a8c4983ced3, type: 3}
+    - target: {fileID: 2536954218580038141, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: jumpClip
       value: 
       objectReference: {fileID: 8300000, guid: fef31c6dda146844ebe7890913c8098f, type: 3}
@@ -45129,7 +45133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038141, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: deathImpactMinSpeed
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038141, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: groundedRaycastFilter.layerMask.m_Bits
@@ -45155,17 +45159,21 @@ PrefabInstance:
       propertyPath: ropeLayerMask.m_Bits
       value: 3137
       objectReference: {fileID: 0}
+    - target: {fileID: 2536954218580038146, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
+      propertyPath: groundedRaycastFilter.layerMask.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038147, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038147, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038147, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.93
       objectReference: {fileID: 0}
     - target: {fileID: 2536954218580038147, guid: 20410f6a1bb261441aa6cc5d27ce2312, type: 3}
       propertyPath: m_LocalPosition.z
@@ -45931,6 +45939,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1931439526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931439523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 497c7f2e658859e4cbecf514d04dbb33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volume: 0.25
+  jumpClip: {fileID: 8300000, guid: fef31c6dda146844ebe7890913c8098f, type: 3}
+  landingClip: {fileID: 8300000, guid: 55c086661b836ed4496faecfa57faf0c, type: 3}
 --- !u!114 &1931439535
 MonoBehaviour:
   m_ObjectHideFlags: 0

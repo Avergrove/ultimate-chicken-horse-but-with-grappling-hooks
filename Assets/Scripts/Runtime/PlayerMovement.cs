@@ -2,25 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IPlayerEventHandler
 {
-    Animator anim;
     AudioSource aSource;
     SpriteRenderer sr;
     Rigidbody2D rgbd;
     RopeSystem ropeSystem;
     public SmoothCamera mainCamera;
 
-    // Grounded raycasts
-    public ContactFilter2D groundedRaycastFilter;
-    public RaycastHit2D[] hitResults = new RaycastHit2D[1];
-
     // Entity states
-    public bool isGrounded;
-    public bool isGrappled;
-    public bool isDying;
-    private Direction direction;
+    private Player player;
 
     // Movement stats
     public float maxGroundSpeed;
@@ -44,59 +37,52 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
-        anim = GetComponent<Animator>();
         aSource = GetComponent<AudioSource>();
         sr = GetComponent<SpriteRenderer>();
         rgbd = GetComponent<Rigidbody2D>();
         ropeSystem = GetComponent<RopeSystem>();
 
-        direction = Direction.Right;
+        player = GetComponent<Player>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         jumpCount = maxJumpCount;
-        isGrappled = false;
-        isGrounded = false;
-        isDying = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        groundCheck();
+
     }
 
     public void Move(float x, float y)
     {
-        if (!isDying)
+        if (!player.IsDying)
         {
-            // Handle miscellaneous stuff not related directly to movement.
-            // TODO: Avoid repeated calls by using event based calls.
-            if (x > 0)
+            if (x != 0)
             {
-                if (direction == Direction.Left)
+                player.IsMoving = true;
+                if (player.MovingDirection == Direction.Left && x > 0)
                 {
-                    direction = Direction.Right;
-                    this.OnDirectionChange(direction);
+                    player.MovingDirection = Direction.Right;
+                }
+
+                else if (player.MovingDirection == Direction.Right && x < 0)
+                {
+                    player.MovingDirection = Direction.Left;
                 }
             }
 
-            else if (x < 0)
+            else
             {
-                if (direction == Direction.Right)
-                {
-                    direction = Direction.Left;
-                    this.OnDirectionChange(direction);
-                }
+                player.IsMoving = false;
             }
-
-
 
 
             // Actually handle movement
-            if (isGrappled)
+            if (player.IsGrappled)
             {
                 ropeSystem.Swing(x);
                 ropeSystem.Rappel(y);
@@ -104,24 +90,21 @@ public class PlayerMovement : MonoBehaviour
 
             else
             {
-                if (isGrounded)
+                if (player.IsGrounded)
                 {
                     if (x > 0)
                     {
                         rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
-                        anim.SetBool("isMoving", true);
                     }
 
                     else if (x < 0)
                     {
                         rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
-                        anim.SetBool("isMoving", true);
                     }
 
                     else
                     {
                         rgbd.velocity = new Vector2(rgbd.velocity.x * (100 - xPercentSpeedDecay) / 100, rgbd.velocity.y);
-                        anim.SetBool("isMoving", false);
                     }
                 }
 
@@ -147,34 +130,36 @@ public class PlayerMovement : MonoBehaviour
                     }
                 }
             }
+
+            ExecuteEvents.Execute<IPlayerEventHandler>(this.gameObject, null, (handler, data) => handler.OnMovingChange(player.IsMoving, player.MovingDirection));
         }
     }
 
     public void Jump()
     {
-        if (!isGrappled)
+        if (jumpCount > 0)
         {
-            if (jumpCount > 0)
+            if (!player.IsGrappled)
             {
                 rgbd.velocity = new Vector2(rgbd.velocity.x, jumpInitialSpeed);
-                aSource.PlayOneShot(jumpClip, 0.25f);
-                jumpCount--;
             }
-        }
 
-        else
-        {
-            this.ReleaseGrapplingHook(Vector2.zero);
-            rgbd.velocity = new Vector2(rgbd.velocity.x, rgbd.velocity.y + grappleJumpBoost);
+            else
+            {
+                this.ReleaseGrapplingHook(Vector2.zero);
+                rgbd.velocity = new Vector2(rgbd.velocity.x, rgbd.velocity.y + grappleJumpBoost);
+            }
+
             jumpCount--;
+            ExecuteEvents.Execute<IPlayerEventHandler>(this.gameObject, null, (handler, data) => handler.OnJump());
         }
     }
 
     // Fires a grappling hook towards target position, if successful, restock jump count.
     public void FireGrapplingHook(Vector2 cursorPosition)
     {
-        isGrappled = ropeSystem.Fire(cursorPosition);
-        if (isGrappled)
+        player.IsGrappled = ropeSystem.Fire(cursorPosition);
+        if (player.IsGrappled)
         {
             aSource.PlayOneShot(fireClip, 0.25f);
             jumpCount = maxJumpCount;
@@ -185,49 +170,7 @@ public class PlayerMovement : MonoBehaviour
     public void ReleaseGrapplingHook(Vector2 cursorPosition)
     {
         ropeSystem.DetachRope();
-        isGrappled = false;
-    }
-
-    /// <summary>
-    /// Checks whether the player is on the ground
-    /// TODO: Swap raycast check with collider check
-    /// </summary>
-    private void groundCheck()
-    {
-
-        int hits = Physics2D.Raycast(transform.position, Vector2.down, groundedRaycastFilter, hitResults, 1.1f);
-        if (hits > 0)
-        {
-            if (!isGrounded)
-            {
-                isGrounded = true;
-                anim.SetBool("isGrounded", isGrounded);
-                jumpCount = maxJumpCount;
-            }
-        }
-
-        else
-        {
-            if (isGrounded)
-            {
-                isGrounded = false;
-                anim.SetBool("isGrounded", isGrounded);
-            }
-        }
-    }
-
-
-    private void OnDirectionChange(Direction newDir)
-    {
-        if(newDir == Direction.Left)
-        {
-            sr.flipX = true;
-        }
-
-        else if(newDir == Direction.Right)
-        {
-            sr.flipX = false;
-        }
+        player.IsGrappled = false;
     }
 
     /// <summary>
@@ -237,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
     public void Die(Vector2 deathOrigin)
     {
         // 1) Be knocked back, this should scale and be clamped somewhat based on velocity on contact
-        isDying = true;
+        player.IsDying = true;
         Vector2 dir = -(deathOrigin - (Vector2) this.transform.position).normalized;
         float deathSpeedParam = Mathf.InverseLerp(deathImpactMinSpeed, deathImpactMaxSpeed, rgbd.velocity.magnitude);
         
@@ -258,7 +201,37 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         this.sr.color = Color.white;
-        isDying = false;
+        player.IsDying = false;
     }
 
+    public void OnGroundedChange(bool isGrounded)
+    {
+        if (isGrounded)
+        {
+            jumpCount = maxJumpCount;
+        }
+    }
+
+    void IPlayerEventHandler.OnMovingChange(bool isMoving, Direction dir)
+    {
+        // Nothing happens.
+    }
+
+    void IPlayerEventHandler.OnGroundedChange(bool isGrounded)
+    {
+        if (isGrounded)
+        {
+            jumpCount = maxJumpCount;
+        }
+    }
+
+    void IPlayerEventHandler.OnJump()
+    {
+        // Nothing should happen, because this class itself is handling the logic.
+    }
+
+    void IPlayerEventHandler.OnGrappledChange(bool isGrappled)
+    {
+        // Nothing should happen, this class is already handling the logic for itself.
+    }
 }
