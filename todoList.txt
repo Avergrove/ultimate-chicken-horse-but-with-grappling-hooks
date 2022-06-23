@@ -10,11 +10,13 @@ Fun factor:
 			- Which involves creating an elastic grappling hook
 			- What if there's a secondary fire meant for ground based movement? This summons a nail so that the player moves forward instead of being pulled across the floor
 				- Check Knuckles' Chaotix tethers, instead of having a second player, you can get the player to fire a heavy tether which hurls them forwards, usable anywhere!
-	
+		- Implement a secondary fire, firing it will slingshot you towards the direction, holding it down will rapidly slow your momentum and fire you further.
+			- As always, don't overdo this mechanic!
+
 UX:
 	1) Implement a more satisfying death
 	2) Implement camera shake
-	3) Add sound effects
+	x) Add sound effects
 	4) Add placeholder music
 	
 Bugs:
@@ -25,3 +27,4 @@ Refactoring:
 	1) Is there a way to use the tile palette to deploy prefabs?
 	2) Move the kill code somewhere else. Maybe even have an IKillable interface.
 	3) PlayerMovement has too much responsibility, it handles physics, logics, and UX.
+		- Solution: Messaging system, and move state of the entity to a simple class to hold state (in this case, Player)
