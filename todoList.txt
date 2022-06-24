@@ -1,18 +1,45 @@
 STUFF:
-	1) Convert your hook into a projectile
+	x) Convert your hook into a projectile
 	2) Implement a reload and fire system, which should help mitigate the problem of the player having too much control of the environment.
 	3) Implement tiles that CANT be hooked on, or tiles in its path that destroys the hook projectile
-	4) Rope length should scale to how far it travelled, also it should be clamped.
+	x) Rope length should scale to how far it travelled, also it should be clamped.
+	5) Projectile should fly faster or slower relative to the player's speed, this allows the player to latch ahead even if they are faster than the projectile.
+	6) Implement a basic stage. Essential elements include:
+		- Latch ropes (Latchable objects you can't stand on)
+		- One-way platforms
+		
+			
+	7) Secondary fire that allows that player to slow down in the air and slingshot themselves forward
+	
+	8) Interactable environments
+		- Objects you can pull with your grappling hook
+		- Pickups that change the stage layout
+		- One-time latchers
+		- Moving platforms
+	
+	9) Stage variety
+		- Extra mechanics:
+			- Wind
+			- Gravity
+			- "Enemies"
+			- Rhythm stages
+		
+		- Challenge areas
+			- 
+			
+		- "Niche" mechanics
+			- Wall climbing
 
-Fun factor:
-	1) The game is not very exciting when there's nothing to latch on on a long path, there are two options:
-		- Don't have long paths
-		- Let players grapple onto the floor to speed boost somehow
-			- Which involves creating an elastic grappling hook
-			- What if there's a secondary fire meant for ground based movement? This summons a nail so that the player moves forward instead of being pulled across the floor
-				- Check Knuckles' Chaotix tethers, instead of having a second player, you can get the player to fire a heavy tether which hurls them forwards, usable anywhere!
-		- Implement a secondary fire, firing it will slingshot you towards the direction, holding it down will rapidly slow your momentum and fire you further.
-			- As always, don't overdo this mechanic!
+		- Layout:
+			- Linear: Just go from start to end!
+			- Pickup: Pick up a colletion of items to move forward
+			- Vertical vs Horizontal: Or even Diagonal!
+		
+	10)- Power ups / Pick ups
+			- Instantaneous grappling
+			- Infinite grappling
+			- Multiple hooks
+			- Hook Refill
 
 UX:
 	1) Implement a more satisfying death
@@ -24,7 +51,7 @@ Bugs:
 		- Check whether it's a render stutter or a velocity stutter!
 	
 Refactoring:
-	1) You should spawn an anchor instead of moving an existing one on the scene
+	x) You should spawn an anchor instead of moving an existing one on the scene
 	2) Is there a way to use the tile palette to deploy prefabs?
 	3) Move the kill code somewhere else. Maybe even have an IKillable interface.
 	
