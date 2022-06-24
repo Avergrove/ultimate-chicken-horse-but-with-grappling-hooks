@@ -9,8 +9,11 @@ public class PlayerMovement : MonoBehaviour, IPlayerEventHandler
     AudioSource aSource;
     SpriteRenderer sr;
     Rigidbody2D rgbd;
-    RopeSystem ropeSystem;
+    GrappleGun ropeSystem;
     public SmoothCamera mainCamera;
+
+    // Related external GameObjects
+    public GameObject spawnPoint;
 
     // Entity states
     private Player player;
@@ -40,7 +43,7 @@ public class PlayerMovement : MonoBehaviour, IPlayerEventHandler
         aSource = GetComponent<AudioSource>();
         sr = GetComponent<SpriteRenderer>();
         rgbd = GetComponent<Rigidbody2D>();
-        ropeSystem = GetComponent<RopeSystem>();
+        ropeSystem = GetComponentInChildren<GrappleGun>();
 
         player = GetComponent<Player>();
     }
@@ -155,7 +158,7 @@ public class PlayerMovement : MonoBehaviour, IPlayerEventHandler
         }
     }
 
-    // Fires a grappling hook towards target position, if successful, restock jump count.
+    // Fires a grappling hook towards target position
     public void FireGrapplingHook(Vector2 cursorPosition)
     {
         player.IsGrappled = ropeSystem.Fire(cursorPosition);
@@ -201,6 +204,7 @@ public class PlayerMovement : MonoBehaviour, IPlayerEventHandler
     {
         yield return new WaitForSeconds(waitTime);
         this.sr.color = Color.white;
+        player.transform.position = spawnPoint.transform.position;
         player.IsDying = false;
     }
 

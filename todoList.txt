@@ -2,6 +2,7 @@ STUFF:
 	1) Convert your hook into a projectile
 	2) Implement a reload and fire system, which should help mitigate the problem of the player having too much control of the environment.
 	3) Implement tiles that CANT be hooked on, or tiles in its path that destroys the hook projectile
+	4) Rope length should scale to how far it travelled, also it should be clamped.
 
 Fun factor:
 	1) The game is not very exciting when there's nothing to latch on on a long path, there are two options:
@@ -23,5 +24,7 @@ Bugs:
 		- Check whether it's a render stutter or a velocity stutter!
 	
 Refactoring:
-	1) Is there a way to use the tile palette to deploy prefabs?
-	2) Move the kill code somewhere else. Maybe even have an IKillable interface.
+	1) You should spawn an anchor instead of moving an existing one on the scene
+	2) Is there a way to use the tile palette to deploy prefabs?
+	3) Move the kill code somewhere else. Maybe even have an IKillable interface.
+	

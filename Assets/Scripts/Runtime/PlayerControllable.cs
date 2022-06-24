@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// An interface for an inputController to control the player.
@@ -21,6 +22,10 @@ public class PlayerControllable : BaseControllable
     {
         this.cursorPosition.x = x;
         this.cursorPosition.y = y;
+        foreach(Transform child in transform)
+        {
+            ExecuteEvents.Execute<IMouseEventManager>(child.gameObject, null, (handler, data) => handler.OnMouseMoved(this.cursorPosition));
+        }
     }
 
     public void OnMouseMoved()

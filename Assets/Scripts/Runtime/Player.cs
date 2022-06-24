@@ -8,6 +8,9 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class Player : MonoBehaviour
 {
+    // Related objects
+    public GameObject spawnPoint;
+
     // Movement states
     private Direction movingDirection = Direction.Right;
 
