@@ -2,35 +2,45 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Grants the user the ability to fire grappling hook ropes
 /// TODO: Add Elasticity
 /// </summary>
-public class GrappleGun : MonoBehaviour, IMouseEventManager
+public class GrappleGun : MonoBehaviour, IMouseEventManager, IGrappleProjectileEventHandler
 {
+    [Header("Crosshair: Config")]
     public GameObject crosshair;
     public float crosshairDistance;
 
     private Player player;
     private Rigidbody2D parentRgbd;
 
-    private bool ropeAttached;
-
     public GameObject ropeAnchor;
     private SpriteRenderer ropeAnchorSprite;
 
+    // Projectile 
+    public GrappleProjectile grappleProjectile;
+
     // Rope properties
     private SpringJoint2D ropeJoint;
+
+    [Header("Rope: Physical Properties")]
     public LineRenderer ropeRenderer;
     public LayerMask ropeLayerMask;
-    private float ropeMaxCastDistance = 20f;
+
+    public float ropeDamping;
+    public float ropeFrequency;
+
 
     private bool isColliding;
 
-    // Movement Stats
+    [Header("Rope: Movement Stats")]
     public float swingForce;
     public float rappelSpeed;
+
+
 
     void Awake()
     {
@@ -72,50 +82,17 @@ public class GrappleGun : MonoBehaviour, IMouseEventManager
     }
 
 
-    
+
     /// <summary>
-    /// Fires the grappling gun
+    /// Fires the grappling gun projectile
     /// </summary>
     /// <param name="cursorPosition">The position of the cursor on the screen</param>
     /// <returns>Whether the fire successfully hooked to an object</returns>
     /// TODO: Adjust frequency according to trajectory, 
-    public bool Fire(Vector2 cursorPosition)
+    public void Fire(Vector2 cursorPosition)
     {
-        if (!ropeAttached)
-        {
-            Vector2 aimDirection = getAimDirection(cursorPosition);
-
-            var hit = Physics2D.Raycast(player.transform.position, aimDirection, ropeMaxCastDistance, ropeLayerMask);
-
-            if (hit.collider != null)
-            {
-                ropeAttached = true;
-
-                ropeRenderer.enabled = true;
-                ropeRenderer.positionCount = 2;
-                ropeRenderer.SetPosition(0, player.transform.position);
-                ropeRenderer.SetPosition(1, hit.point);
-
-
-                ropeAnchor.transform.position = hit.point;
-                ropeJoint.distance = Vector2.Distance(player.transform.position, hit.point);
-                ropeJoint.enabled = true;
-                ropeAnchorSprite.enabled = true;
-
-                return true;
-            }
-
-            else
-            {
-                ropeRenderer.enabled = false;
-                ropeAttached = false;
-                ropeJoint.enabled = false;
-
-                return false;
-            }
-        }
-
-        return true;
+        Vector2 aimVect = getAimDirection(cursorPosition);
+        grappleProjectile.Ignite(aimVect);
     }
 
     public void DetachRope()
@@ -128,7 +105,6 @@ public class GrappleGun : MonoBehaviour, IMouseEventManager
     private void ResetRope()
     {
         ropeJoint.enabled = false;
-        ropeAttached = false;
         ropeRenderer.positionCount = 0;
         ropeRenderer.enabled = false;
         ropeAnchorSprite.enabled = false;
@@ -141,11 +117,11 @@ public class GrappleGun : MonoBehaviour, IMouseEventManager
     /// <param name="y">The directional y axis input</param>
     public void Swing(float x)
     {
-        if(x < 0 || x > 0)
+        if (x < 0 || x > 0)
         {
-            var playerToHookDirection = ((Vector2) ropeAnchor.transform.position - (Vector2) player.transform.position).normalized;
+            var playerToHookDirection = ((Vector2)ropeAnchor.transform.position - (Vector2)player.transform.position).normalized;
             Vector2 swingDirection;
-            if(x < 0)
+            if (x < 0)
             {
                 if (player.transform.position.y <= ropeAnchor.transform.position.y)
                 {
@@ -208,8 +184,8 @@ public class GrappleGun : MonoBehaviour, IMouseEventManager
     private Vector2 getAimDirection(Vector2 cursorPos)
     {
         Vector2 worldMousePosition = Camera.main.ScreenToWorldPoint(new Vector3(cursorPos.x, cursorPos.y, 0f));
-        Vector2 aimDirection = ((Vector2) worldMousePosition - (Vector2) player.transform.position).normalized;
-        
+        Vector2 aimDirection = ((Vector2)worldMousePosition - (Vector2)player.transform.position).normalized;
+
         return aimDirection;
     }
 
@@ -217,8 +193,43 @@ public class GrappleGun : MonoBehaviour, IMouseEventManager
     {
         sj.connectedBody = ropeAnchor.GetComponent<Rigidbody2D>();
         sj.autoConfigureDistance = false;
-        sj.dampingRatio = 0.925f;
-        sj.frequency = 1;
+        sj.dampingRatio = ropeDamping;
+        sj.frequency = ropeFrequency;
         sj.enabled = false;
+    }
+
+    void IGrappleProjectileEventHandler.OnProjectileHit(bool isSuccess, Collider2D collider, Vector2 contactPoint)
+    {
+        if (isSuccess)
+        {
+            // Latch onto the position of whatever the projectile hit
+            GrappleToPoint(contactPoint);
+        }
+
+        else
+        {
+            // I don't think anything happens if you fail, you still need to reload either way
+
+        }
+
+        // Spread the event to the owner too
+        ExecuteEvents.Execute<IGrappleProjectileEventHandler>(player.gameObject, null, (handler, data) => handler.OnProjectileHit(isSuccess, collider, contactPoint));
+    }
+
+    private void GrappleToPoint(Vector2 grapplePoint)
+    {
+
+        ropeRenderer.enabled = true;
+        ropeRenderer.positionCount = 2;
+        ropeRenderer.SetPosition(0, player.transform.position);
+        ropeRenderer.SetPosition(1, grapplePoint);
+
+
+        ropeAnchor.transform.position = grapplePoint;
+        ropeJoint.distance = Vector2.Distance(player.transform.position, grapplePoint);
+        ropeJoint.enabled = true;
+        ropeAnchorSprite.enabled = true;
+
+
     }
 }

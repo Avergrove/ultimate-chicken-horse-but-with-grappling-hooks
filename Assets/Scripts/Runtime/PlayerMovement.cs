@@ -4,7 +4,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerMovement : MonoBehaviour, IPlayerEventHandler
+public class PlayerMovement : MonoBehaviour, IPlayerEventHandler, IGrappleProjectileEventHandler
 {
     AudioSource aSource;
     SpriteRenderer sr;
@@ -161,12 +161,7 @@ public class PlayerMovement : MonoBehaviour, IPlayerEventHandler
     // Fires a grappling hook towards target position
     public void FireGrapplingHook(Vector2 cursorPosition)
     {
-        player.IsGrappled = ropeSystem.Fire(cursorPosition);
-        if (player.IsGrappled)
-        {
-            aSource.PlayOneShot(fireClip, 0.25f);
-            jumpCount = maxJumpCount;
-        }
+        ropeSystem.Fire(cursorPosition);
     }
 
     // Releases the grappling hook
@@ -184,9 +179,9 @@ public class PlayerMovement : MonoBehaviour, IPlayerEventHandler
     {
         // 1) Be knocked back, this should scale and be clamped somewhat based on velocity on contact
         player.IsDying = true;
-        Vector2 dir = -(deathOrigin - (Vector2) this.transform.position).normalized;
+        Vector2 dir = -(deathOrigin - (Vector2)this.transform.position).normalized;
         float deathSpeedParam = Mathf.InverseLerp(deathImpactMinSpeed, deathImpactMaxSpeed, rgbd.velocity.magnitude);
-        
+
         this.rgbd.velocity = dir * Mathf.Lerp(deathBaseSpeed * 0.8f, deathBaseSpeed * 1.2f, deathSpeedParam);
         this.sr.color = Color.red;
 
@@ -237,5 +232,16 @@ public class PlayerMovement : MonoBehaviour, IPlayerEventHandler
     void IPlayerEventHandler.OnGrappledChange(bool isGrappled)
     {
         // Nothing should happen, this class is already handling the logic for itself.
+    }
+
+    void IGrappleProjectileEventHandler.OnProjectileHit(bool isSuccess, Collider2D collider, Vector2 contactPoint)
+    {
+        player.IsGrappled = isSuccess;
+        if (isSuccess)
+        {
+            aSource.PlayOneShot(fireClip, 0.25f);
+            jumpCount = maxJumpCount;
+
+        }
     }
 }
