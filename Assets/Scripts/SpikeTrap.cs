@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 /// <summary>
 /// The spike trap is a platform type that kills the player if they move in the direction of the box collider
 /// </summary>
-public class SpikeTrap : MonoBehaviour
+public class SpikeTrap : ScriptedTile
 {
 
     private AudioSource aSource;
@@ -22,25 +23,28 @@ public class SpikeTrap : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         // Kill the player if they are moving towards the direction of the collission
         // 1) Is it player that is touching?
         // 2) Is the player moving *towards* the spike?
         // 3) KILL
 
-        if (collider.gameObject.CompareTag(Constants.tags[Constants.Tags.Player]))
+        if (collision.gameObject.CompareTag(Constants.tags[Constants.Tags.Player]))
         {
-            Rigidbody2D rgbd;
-            PlayerMovement playerMovement = collider.GetComponent<PlayerMovement>();
-            if (collider.TryGetComponent<Rigidbody2D>(out rgbd))
+            // Rigidbody2D rgbd;
+            PlayerMovement playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
+            this.Kill(playerMovement);
+            /* TODO : Commented out due to edge case problem of identifying collided tiles.
+            if (collision.gameObject.TryGetComponent<Rigidbody2D>(out rgbd))
             {
-                // Evaluate collider position
-                Vector2 closestPoint = collider.ClosestPoint(this.transform.position);
-                Vector2 center = this.transform.position;
 
-                bool right = closestPoint.x > center.x;
-                bool top = closestPoint.y > center.y;
+                Vector2 contactPoint = collision.GetContact(0).point;
+                Vector3Int tilePos = this.GetCollidedTilePositionInGrid(contactPoint);
+                Vector2 center = tilemap.GetCellCenterWorld(tilePos);
+
+                bool right = contactPoint.x > center.x;
+                bool top = contactPoint.y > center.y;
 
                 if(top && rgbd.velocity.y < 0)
                 {
@@ -52,7 +56,7 @@ public class SpikeTrap : MonoBehaviour
                     this.Kill(playerMovement);
                 }
 
-                if (right && rgbd.velocity.x < 0)
+                else if (right && rgbd.velocity.x < 0)
                 {
                     this.Kill(playerMovement);
                 }
@@ -61,7 +65,9 @@ public class SpikeTrap : MonoBehaviour
                 {
                     this.Kill(playerMovement);
                 }
+
             }
+                */
         }
     }
 
@@ -70,4 +76,5 @@ public class SpikeTrap : MonoBehaviour
         target.Die(this.transform.position);
         aSource.Play();
     }
+
 }

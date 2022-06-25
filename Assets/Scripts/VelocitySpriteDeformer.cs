@@ -21,12 +21,16 @@ public class VelocitySpriteDeformer : MonoBehaviour
     private Rigidbody2D rgbd;
     private SpriteRenderer sr;
 
+    private Vector2 baseSize;
+
+
     // Start is called before the first frame update
     void Start()
     {
         this.player = GetComponent<Player>();
         this.rgbd = GetComponent<Rigidbody2D>();
         this.sr = GetComponent<SpriteRenderer>();
+        this.baseSize = sr.size;
     }
 
     // Update is called once per frame
@@ -40,12 +44,12 @@ public class VelocitySpriteDeformer : MonoBehaviour
             float clampedXSpeed = Mathf.Clamp(speedX, xDeformMinSpeed, xDeformMaxSpeed);
             float xSpeedInvLerp = Mathf.InverseLerp(xDeformMinSpeed, xDeformMaxSpeed, clampedXSpeed);
 
-            sr.size = new Vector2(sr.size.x, Mathf.SmoothStep(1, yMaxDeform, xSpeedInvLerp));
+            sr.size = new Vector2(this.baseSize.x, Mathf.SmoothStep(this.baseSize.y, this.baseSize.y * yMaxDeform, xSpeedInvLerp));
         }
 
         else
         {
-            sr.size = new Vector2(sr.size.x, 1);
+            sr.size = new Vector2(this.baseSize.x, this.baseSize.y);
         }
 
         if(speedY > yDeformMinSpeed)
@@ -53,12 +57,12 @@ public class VelocitySpriteDeformer : MonoBehaviour
             float clampedYSpeed = Mathf.Clamp(speedY, yDeformMinSpeed, yDeformMaxSpeed);
             float ySpeedInvLerp = Mathf.InverseLerp(yDeformMinSpeed, yDeformMaxSpeed, clampedYSpeed);
 
-            sr.size = new Vector2(Mathf.SmoothStep(1, xMaxDeform, ySpeedInvLerp), sr.size.y);
+            sr.size = new Vector2(Mathf.SmoothStep(this.baseSize.x, this.baseSize.x * xMaxDeform, ySpeedInvLerp), this.baseSize.y);
         }
 
         else
         {
-            sr.size = new Vector2(1, sr.size.y);
+            sr.size = new Vector2(this.baseSize.x, this.baseSize.y);
         }
     }
 }
