@@ -1,14 +1,11 @@
 STUFF:
-	x) Convert your hook into a projectile
 	2) Implement a reload and fire system, which should help mitigate the problem of the player having too much control of the environment.
 	3) Implement tiles that CANT be hooked on, or tiles in its path that destroys the hook projectile
-	x) Rope length should scale to how far it travelled, also it should be clamped.
 	5) Projectile should fly faster or slower relative to the player's speed, this allows the player to latch ahead even if they are faster than the projectile.
 	6) Implement a basic stage. Essential elements include:
 		- Latch ropes (Latchable objects you can't stand on)
 		- One-way platforms
 		
-			
 	7) Secondary fire that allows that player to slow down in the air and slingshot themselves forward
 	
 	8) Interactable environments
@@ -49,9 +46,14 @@ UX:
 Bugs:
 	1) Player character stutters at max speed 
 		- Check whether it's a render stutter or a velocity stutter!
+	2) You can rapple into the ground
+		- Fix it by makign sure you can't rappel while "on the ground"
+	3) Jump shouldn't function when you're dying.
+		- or maybe....
 	
 Refactoring:
-	x) You should spawn an anchor instead of moving an existing one on the scene
-	2) Is there a way to use the tile palette to deploy prefabs?
+	x) Is there a way to use the tile palette to deploy prefabs?
 	3) Move the kill code somewhere else. Maybe even have an IKillable interface.
 	
+Joke ideas:
+	1) A pub called Super Idle where you ... wait for a reward while a familliar tone plays...
