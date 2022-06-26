@@ -20,6 +20,7 @@ STUFF:
 			- Gravity
 			- "Enemies"
 			- Rhythm stages
+			
 		
 		- Challenge areas
 			- 
@@ -31,12 +32,25 @@ STUFF:
 			- Linear: Just go from start to end!
 			- Pickup: Pick up a colletion of items to move forward
 			- Vertical vs Horizontal: Or even Diagonal!
+			- Misc: Staircase, zig-zag
+			- Try and mix up the layout between rooms  
+		
+		- Try keeping levels to 15-20 rooms
+		- You don't have to oversaturate stages with mechanics, you just have to introduce a few and challenge them towards the end!
+			- In particular, mixing mechanics together towards the end
+		
+		- Reference: Megaman rooms, using hallways to force players to react appropriately
+		
 		
 	10)- Power ups / Pick ups
 			- Instantaneous grappling
 			- Infinite grappling
 			- Multiple hooks
 			- Hook Refill
+
+
+	11) Enemies:
+			- The grappling hook can also act as a weapon to destroy enemies. Players should fire responsibly to avoid an accidental hook to their death!
 
 UX:
 	1) Implement a more satisfying death
@@ -50,6 +64,10 @@ Bugs:
 		- Fix it by makign sure you can't rappel while "on the ground"
 	3) Jump shouldn't function when you're dying.
 		- or maybe....
+	4) Grapple projectile shouldn't be able to be fired again
+	5) The anchor should move along with a moving platform.
+	6) The player should move along the moving platform
+		- Because thesse 2 problems involve the moving platform, it's a good idea to figure out how to work with parenting objects with platforms.
 	
 Refactoring:
 	x) Is there a way to use the tile palette to deploy prefabs?

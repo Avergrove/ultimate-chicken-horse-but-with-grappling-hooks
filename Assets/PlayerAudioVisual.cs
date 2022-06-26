@@ -10,6 +10,7 @@ public class PlayerAudioVisual : MonoBehaviour, IPlayerEventHandler
     Animator anim;
     SpriteRenderer sr;
     AudioSource audioSource;
+    ParticleSystem ps;
 
     [Range(0, 1)]
     public float volume;
@@ -23,6 +24,7 @@ public class PlayerAudioVisual : MonoBehaviour, IPlayerEventHandler
         anim = this.GetComponent<Animator>();
         audioSource = this.GetComponent<AudioSource>();
         sr = this.GetComponent<SpriteRenderer>();
+        ps = this.GetComponent<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -62,6 +64,7 @@ public class PlayerAudioVisual : MonoBehaviour, IPlayerEventHandler
 
     void IPlayerEventHandler.OnJump()
     {
+        ps.Emit(50);
         audioSource.PlayOneShot(jumpClip, volume);
     }
 }
