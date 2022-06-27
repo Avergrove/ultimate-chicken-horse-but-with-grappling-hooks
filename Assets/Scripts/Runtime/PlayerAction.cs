@@ -27,6 +27,8 @@ public class PlayerAction : MonoBehaviour, IPlayerEventHandler, IGrappleProjecti
     public float maxAirSpeedDecel;
     public float jumpInitialSpeed;
 
+    private Vector2 inheritedVelocity;
+
     public int maxJumpCount;
     private int jumpCount;
 
@@ -48,6 +50,7 @@ public class PlayerAction : MonoBehaviour, IPlayerEventHandler, IGrappleProjecti
         ropeSystem = GetComponentInChildren<GrappleGun>();
 
         player = GetComponent<Player>();
+        inheritedVelocity = Vector2.zero;
     }
 
     // Start is called before the first frame update
@@ -141,7 +144,7 @@ public class PlayerAction : MonoBehaviour, IPlayerEventHandler, IGrappleProjecti
         {
             if (!player.IsGrappled)
             {
-                rgbd.velocity = new Vector2(rgbd.velocity.x, jumpInitialSpeed);
+                rgbd.velocity = new Vector2(rgbd.velocity.x, jumpInitialSpeed) + inheritedVelocity;
             }
 
             else
@@ -248,11 +251,11 @@ public class PlayerAction : MonoBehaviour, IPlayerEventHandler, IGrappleProjecti
     /// <param name="platform"></param>
     void IMovingPlatformEventHandler.OnPlatformLeave(MovingPlatform platform)
     {
-        this.rgbd.velocity += platform.GetVelocity();
+        inheritedVelocity = Vector2.zero;
     }
 
     void IMovingPlatformEventHandler.OnPlatformMove(MovingPlatform platform)
     {
-        // Nothing really happens while moving
+        inheritedVelocity = platform.GetVelocity();
     }
 }

@@ -88,7 +88,7 @@ public class MovingPlatform : MonoBehaviour
     /// <summary>
     /// Draws the line where the platform will move in the editor
     /// </summary>
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
         for (int i = 0; i < positions.Count; i++)
