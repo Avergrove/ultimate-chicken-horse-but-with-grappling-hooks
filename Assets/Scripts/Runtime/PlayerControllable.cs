@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 public class PlayerControllable : BaseControllable
 {
     public Player player;
-    public PlayerMovement playerMovement;
+    public PlayerAction playerMovement;
 
     private Vector2 cursorPosition;
 

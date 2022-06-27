@@ -8,13 +8,15 @@ public class Constants
     {  
         Player,
         Grappleable,
-        GameController
+        GameController,
+        PlatformClinging
     }
 
     public static Dictionary<Tags, string> tags = new Dictionary<Tags, string>()
     {
         {Tags.Player, "Player"},
         {Tags.GameController, "GameController"},
-        {Tags.Grappleable, "Grappleable" }
+        {Tags.Grappleable, "Grappleable" },
+        {Tags.PlatformClinging, "PlatformClinging" }
     };
 }

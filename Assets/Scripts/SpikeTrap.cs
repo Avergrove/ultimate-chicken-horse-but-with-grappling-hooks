@@ -33,7 +33,7 @@ public class SpikeTrap : ScriptedTile
         if (collision.gameObject.CompareTag(Constants.tags[Constants.Tags.Player]))
         {
             // Rigidbody2D rgbd;
-            PlayerMovement playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
+            PlayerAction playerMovement = collision.gameObject.GetComponent<PlayerAction>();
             this.Kill(playerMovement);
             /* TODO : Commented out due to edge case problem of identifying collided tiles.
             if (collision.gameObject.TryGetComponent<Rigidbody2D>(out rgbd))
@@ -71,7 +71,7 @@ public class SpikeTrap : ScriptedTile
         }
     }
 
-    private void Kill(PlayerMovement target)
+    private void Kill(PlayerAction target)
     {
         target.Die(this.transform.position);
         aSource.Play();

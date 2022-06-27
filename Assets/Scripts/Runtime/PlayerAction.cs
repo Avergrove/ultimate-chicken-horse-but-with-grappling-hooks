@@ -4,13 +4,12 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerMovement : MonoBehaviour, IPlayerEventHandler, IGrappleProjectileEventHandler
+public class PlayerAction : MonoBehaviour, IPlayerEventHandler, IGrappleProjectileEventHandler, IMovingPlatformEventHandler
 {
     AudioSource aSource;
     SpriteRenderer sr;
     Rigidbody2D rgbd;
     GrappleGun ropeSystem;
-    public SmoothCamera mainCamera;
 
     // Related external GameObjects
     public GameObject spawnPoint;
@@ -19,10 +18,13 @@ public class PlayerMovement : MonoBehaviour, IPlayerEventHandler, IGrappleProjec
     private Player player;
 
     // Movement stats
-    public float maxGroundSpeed;
-    [Tooltip("Speed lost in percent on every tick.")]
-    public float xPercentSpeedDecay;
-    public float xPercentAirSpeedDecay;
+    public float velocityPower;
+    public float groundAccel;
+    public float groundDecel;
+    public float airAccel;
+    public float airDecel;
+    public float maxSpeed;
+    public float maxAirSpeedDecel;
     public float jumpInitialSpeed;
 
     public int maxJumpCount;
@@ -93,45 +95,40 @@ public class PlayerMovement : MonoBehaviour, IPlayerEventHandler, IGrappleProjec
 
             else
             {
+                float targetSpeed = maxSpeed * x;
+                float speedDiff = targetSpeed - rgbd.velocity.x;
+                float accelRate;
+                float movement;
                 if (player.IsGrounded)
                 {
-                    if (x > 0)
-                    {
-                        rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
-                    }
-
-                    else if (x < 0)
-                    {
-                        rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
-                    }
-
-                    else
-                    {
-                        rgbd.velocity = new Vector2(rgbd.velocity.x * (100 - xPercentSpeedDecay) / 100, rgbd.velocity.y);
-                    }
+                    accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? groundAccel : groundDecel;
                 }
 
                 else
                 {
-                    if (x > 0)
+                    if (rgbd.velocity.x * targetSpeed > 0)
                     {
-                        if (rgbd.velocity.x < maxGroundSpeed)
+                        if (Mathf.Abs(rgbd.velocity.x) <= maxSpeed)
                         {
-                            rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
+                            accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? airAccel : airDecel;
                         }
-                    }
 
-                    else if (x < 0)
-                    {
-                        rgbd.velocity = new Vector2(maxGroundSpeed * x, rgbd.velocity.y);
+                        else
+                        {
+                            accelRate = maxAirSpeedDecel * Mathf.Abs(1 - x);
+                        }
                     }
 
                     else
                     {
-                        // Speed decays slower in the air
-                        rgbd.velocity = new Vector2(rgbd.velocity.x * (100 - xPercentAirSpeedDecay) / 100, rgbd.velocity.y);
+                        accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? airAccel : airDecel;
                     }
+
                 }
+
+                movement = Mathf.Pow(Mathf.Abs(speedDiff) * accelRate, velocityPower) * Mathf.Sign(speedDiff);
+                this.rgbd.AddForce(new Vector2(movement, 0));
+
             }
 
             ExecuteEvents.Execute<IPlayerEventHandler>(this.gameObject, null, (handler, data) => handler.OnMovingChange(player.IsMoving, player.MovingDirection));
@@ -243,5 +240,19 @@ public class PlayerMovement : MonoBehaviour, IPlayerEventHandler, IGrappleProjec
             jumpCount = maxJumpCount;
 
         }
+    }
+
+    /// <summary>
+    /// Inherit the velocity of the platform when leaving.
+    /// </summary>
+    /// <param name="platform"></param>
+    void IMovingPlatformEventHandler.OnPlatformLeave(MovingPlatform platform)
+    {
+        this.rgbd.velocity += platform.GetVelocity();
+    }
+
+    void IMovingPlatformEventHandler.OnPlatformMove(MovingPlatform platform)
+    {
+        // Nothing really happens while moving
     }
 }

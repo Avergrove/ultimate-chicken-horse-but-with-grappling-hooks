@@ -13,6 +13,18 @@ STUFF:
 		- Pickups that change the stage layout
 		- One-time latchers
 		- Moving platforms
+		
+		-
+		
+		- On-Contact platforms
+			- Moving, Launching, Dissapearing, certain death.
+			- Portals
+		
+		- On-grapple platforms
+			- Moving, Dissapearing
+			
+		- On-Jump platforms
+			- Reappearinng
 	
 	9) Stage variety
 		- Extra mechanics:
@@ -51,6 +63,14 @@ STUFF:
 
 	11) Enemies:
 			- The grappling hook can also act as a weapon to destroy enemies. Players should fire responsibly to avoid an accidental hook to their death!
+
+	12) Movement extras:
+		- "Bunny hops"
+		- Jump cuts
+		- Coyote time
+
+	13) Unity doesn't allow multiple tags for one object for some reason.... change that!
+		- So one object can have different "properties"...
 
 UX:
 	1) Implement a more satisfying death

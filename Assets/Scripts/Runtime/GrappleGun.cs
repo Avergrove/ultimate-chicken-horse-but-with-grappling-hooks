@@ -63,6 +63,7 @@ public class GrappleGun : MonoBehaviour, IMouseEventManager, IGrappleProjectileE
     private void RefreshRope()
     {
         ropeRenderer.SetPosition(0, player.transform.position);
+        ropeRenderer.SetPosition(1, ropeAnchor.transform.position);
     }
 
     private void RefreshCrosshairPosition(Vector2 cursorPosition)
@@ -108,6 +109,7 @@ public class GrappleGun : MonoBehaviour, IMouseEventManager, IGrappleProjectileE
         ropeRenderer.positionCount = 0;
         ropeRenderer.enabled = false;
         ropeAnchorSprite.enabled = false;
+        ropeAnchor.transform.parent = player.transform;
     }
 
     /// <summary>
@@ -203,7 +205,7 @@ public class GrappleGun : MonoBehaviour, IMouseEventManager, IGrappleProjectileE
         if (isSuccess)
         {
             // Latch onto the position of whatever the projectile hit
-            GrappleToPoint(contactPoint);
+            GrappleToPoint(collider, contactPoint);
         }
 
         else
@@ -216,7 +218,7 @@ public class GrappleGun : MonoBehaviour, IMouseEventManager, IGrappleProjectileE
         ExecuteEvents.Execute<IGrappleProjectileEventHandler>(player.gameObject, null, (handler, data) => handler.OnProjectileHit(isSuccess, collider, contactPoint));
     }
 
-    private void GrappleToPoint(Vector2 grapplePoint)
+    private void GrappleToPoint(Collider2D collider, Vector2 grapplePoint)
     {
 
         ropeRenderer.enabled = true;
@@ -224,7 +226,7 @@ public class GrappleGun : MonoBehaviour, IMouseEventManager, IGrappleProjectileE
         ropeRenderer.SetPosition(0, player.transform.position);
         ropeRenderer.SetPosition(1, grapplePoint);
 
-
+        ropeAnchor.transform.parent = collider.transform;
         ropeAnchor.transform.position = grapplePoint;
         ropeJoint.distance = Vector2.Distance(player.transform.position, grapplePoint);
         ropeJoint.enabled = true;
